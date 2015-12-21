@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="BasicInfo">
+        <item>Name: Magnus Elden</item>
+        <item>Address: Rolf E. Stenersens allé 20, 0858 Oslo, Norway</item>
+        <item>Email: magnus_elden@hotmail.com</item>
+        <item>Mobile: +47 98842843</item>
+    </string-array>
+
+    <string-array name="PersonalInfo">
+        <item>Age: 25</item>
+        <item>Sex: Male</item>
+        <item>Marital Status: Single</item>
+        <item>Sex appeal: Godlike</item>
+    </string-array>
+
+    <string-array name="Achievements">
+        <item>Helped found my own company IMERSO</item>
+        <item>Built a game engine using C++ and OpenGL</item>
+        <item>Got four degrees from university level.</item>
+    </string-array>
+
+    <string-array name="Education">
+        <item>Elementary school: Nidarvoll Skole</item>
+        <item>Junior high: Hommelvik Ungdomskole</item>
+        <item>Highschool: Malvik Videregående Skole</item>
+        <item>University: University of Oslo</item>
+        <item>University: 城西国際大学</item>
+        <item>University: 関西学院大学</item>
+    </string-array>
+
+    <string-array name="WorkExperience">
+        <item>Customer something: Telehuset AS</item>
+        <item>CTO: IMERSO</item>
+    </string-array>
+
+    <string-array name="Skills">
+        <item>C++</item>
+        <item>Java</item>
+        <item>C</item>
+        <item>Unreal Engine 4</item>
+        <item>OpenGL</item>
+        <item>Android</item>
+        <item>Assembly</item>
+        <item>Networking</item>
+    </string-array>
+
+    <string-array name="Interests">
+        <item>Cooking</item>
+        <item>Learning</item>
+        <item>Traveling</item>
+        <item>Gaming</item>
+        <item>Anime</item>
+        <item>Discussions</item>
+        <item>Climbing</item>
+        <item>Eating</item>
+        <item>Seeking challenges</item>
+    </string-array>
+
+    <string-array name="Languages">
+        <item>Norwegian: Mother tongue</item>
+        <item>English: Full professional proficiency</item>
+        <item>Japanese: Fluent</item>
+        <item>Dutch: Elementary</item>
+    </string-array>
+
+    <string-array name="CVFields">
+        <item>Basic Info</item>
+        <item>Personal info</item>
+        <item>Achievements</item>
+        <item>Education</item>
+        <item>Work Experience</item>
+        <item>Skills</item>
+        <item>Languages</item>
+        <item>Hobbies/Interests</item>
+    </string-array>
+</resources>

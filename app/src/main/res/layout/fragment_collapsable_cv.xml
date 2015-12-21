@@ -1,0 +1,42 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#111111">
+
+        <Button
+            style="?android:attr/actionButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit Content"
+            android:id="@+id/button"
+            android:background="@drawable/buttonroundedstyle"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+    <ExpandableListView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:background="#333333"
+        android:clickable="false"
+        android:divider="#999999"
+        android:dividerHeight="1dp"
+        android:elevation="4dp"
+        android:visibility="visible"
+        android:scrollIndicators="none"
+        android:id="@+id/CVList">
+    </ExpandableListView>
+
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </TextView>
+
+
+</LinearLayout>
