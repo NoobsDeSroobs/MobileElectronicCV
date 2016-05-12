@@ -2,12 +2,10 @@ package com.example.imerso.camerafeed;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.widget.TextView;
+
+import com.example.imerso.camerafeed.MyOpenGL.MyGLRenderer;
 
 public class OpenGLActivity extends GLSurfaceView implements GestureDetector.OnDoubleTapListener, GestureDetector.OnGestureListener{
 

@@ -12,6 +12,13 @@
     android:background="#333333">
 
 
+    <fragment
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:name="com.example.imerso.camerafeed.Frags.MenuFragment"
+        android:id="@+id/menufragment"
+        tools:layout="@layout/fragment_menu" />
+
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

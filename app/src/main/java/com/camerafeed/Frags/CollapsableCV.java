@@ -1,4 +1,4 @@
-package com.example.imerso.camerafeed;
+package com.example.imerso.camerafeed.Frags;
 
 
 import android.app.ExpandableListActivity;
@@ -13,6 +13,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
+
+import com.example.imerso.camerafeed.ExpandableListAdapter;
+import com.example.imerso.camerafeed.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;

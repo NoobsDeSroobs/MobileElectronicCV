@@ -1,4 +1,4 @@
-package com.example.imerso.camerafeed;
+package com.example.imerso.camerafeed.Frags;
 
 
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.imerso.camerafeed.R;
 
 
 public class FrontPageFragment extends Fragment {

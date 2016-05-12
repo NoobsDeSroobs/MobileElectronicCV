@@ -1,21 +1,29 @@
 package com.example.imerso.camerafeed;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Menu;
 import android.view.MotionEvent;
-import android.widget.TextView;
 
-public class MainActivity extends FragmentActivity implements GestureDetector.OnDoubleTapListener, GestureDetector.OnGestureListener{
+import com.example.imerso.camerafeed.Frags.CollapsableCV;
+import com.example.imerso.camerafeed.Frags.FrontPageFragment;
+import com.example.imerso.camerafeed.Frags.IlluminatedSquaresFragments;
+import com.example.imerso.camerafeed.Frags.MenuFragment;
+
+
+public class MainActivity extends AppCompatActivity implements GestureDetector.OnDoubleTapListener, GestureDetector.OnGestureListener, MenuFragment.MenuFragmentInterface{
 
     GestureDetector GestDetect;
     FragmentManager fm;
     CollapsableCV CCV = new CollapsableCV();
     FrontPageFragment FPF = new FrontPageFragment();
+    IlluminatedSquaresFragments IllSqrFrag = new IlluminatedSquaresFragments();
+    MenuFragment MF = new MenuFragment();
 
     private OpenGLActivity mGLView;
 
@@ -25,8 +33,9 @@ public class MainActivity extends FragmentActivity implements GestureDetector.On
         setContentView(R.layout.activity_main);
         GestDetect = new GestureDetector(this, this);
         fm = getFragmentManager();
-
-
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.ActionBar);
+        setSupportActionBar(myToolbar);
+        MF.setManagerActivity(this);
     }
 
     @Override
@@ -36,8 +45,15 @@ public class MainActivity extends FragmentActivity implements GestureDetector.On
 
         ft.replace(R.id.ReplaceFragment, FPF);
         ft.commit();
+        Log.v("Test", "Ran the create options menu");
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.actionmenu, menu);
+        return true;
+    }
 //////////////// Begin Gestures ////////////////
 
             @Override
@@ -104,4 +120,27 @@ public class MainActivity extends FragmentActivity implements GestureDetector.On
             return super.onTouchEvent(event);
         }
 
+    @Override
+    public void DoAction(MenuFragment.MenuOptions actionID) {
+        FragmentTransaction ft = fm.beginTransaction();
+
+        switch (actionID){
+            case CollapsableCV:
+                ft.replace(R.id.ReplaceFragment, CCV);
+                ft.commit();
+                break;
+            case GLLights:
+                ft.replace(R.id.ReplaceFragment, IllSqrFrag);
+                ft.commit();
+                break;
+            case FrontPage:
+                ft.replace(R.id.ReplaceFragment, FPF);
+                ft.commit();
+                break;
+            default:
+                Log.e("DoAction", "Unrecognized option.");
+
+                break;
+        }
+    }
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ActionbarMenu">
+
+    <group
+        android:checkableBehavior="single"
+        android:visible="true">
+
+        <item android:id="@+id/MenuOptionFrontPage"
+            android:title="Frontpage">
+
+        </item>
+
+        <item android:id="@+id/MenuOptionList"
+            android:title="CV">
+
+        </item>
+        <item android:id="@+id/MenuOptionLights"
+            android:title="Illuminated Squares">
+
+        </item>
+        <item android:id="@+id/MenuOptionGoL"
+            android:title="Game of Life">
+
+        </item>
+
+    </group>
+</menu>
