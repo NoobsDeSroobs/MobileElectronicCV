@@ -1,4 +1,4 @@
-package com.example.imerso.camerafeed.MyOpenGL;
+package com.camerafeed.MyOpenGL;
 
 import android.opengl.GLES20;
 import android.util.Log;

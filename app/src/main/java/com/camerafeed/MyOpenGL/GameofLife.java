@@ -1,4 +1,4 @@
-package com.example.imerso.camerafeed.MyOpenGL;
+package com.camerafeed.MyOpenGL;
 
 /**
  * Created by NoobsDeSroobs on 12-May-16.

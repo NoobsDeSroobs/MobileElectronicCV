@@ -1,4 +1,4 @@
-package com.example.imerso.camerafeed.Frags;
+package com.camerafeed.Frags;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.imerso.camerafeed.R;
+import com.camerafeed.R;
 
 public class MenuFragment extends Fragment {
 

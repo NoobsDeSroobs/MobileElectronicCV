@@ -8,14 +8,14 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
-    tools:context="com.example.imerso.camerafeed.MainActivity"
+    tools:context="com.camerafeed.MainActivity"
     android:background="#333333">
 
 
     <fragment
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:name="com.example.imerso.camerafeed.Frags.MenuFragment"
+        android:name="com.camerafeed.Frags.MenuFragment"
         android:id="@+id/menufragment"
         tools:layout="@layout/fragment_menu" />
 

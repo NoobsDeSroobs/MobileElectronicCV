@@ -1,4 +1,4 @@
-package com.example.imerso.camerafeed;
+package com.camerafeed;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -10,10 +10,10 @@ import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MotionEvent;
 
-import com.example.imerso.camerafeed.Frags.CollapsableCV;
-import com.example.imerso.camerafeed.Frags.FrontPageFragment;
-import com.example.imerso.camerafeed.Frags.IlluminatedSquaresFragments;
-import com.example.imerso.camerafeed.Frags.MenuFragment;
+import com.camerafeed.Frags.CollapsableCV;
+import com.camerafeed.Frags.FrontPageFragment;
+import com.camerafeed.Frags.IlluminatedSquaresFragments;
+import com.camerafeed.Frags.MenuFragment;
 
 
 public class MainActivity extends AppCompatActivity implements GestureDetector.OnDoubleTapListener, GestureDetector.OnGestureListener, MenuFragment.MenuFragmentInterface{

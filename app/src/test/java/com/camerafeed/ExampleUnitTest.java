@@ -1,4 +1,4 @@
-package com.example.imerso.camerafeed;
+package com.camerafeed;
 
 import org.junit.Test;
 

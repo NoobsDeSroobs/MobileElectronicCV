@@ -1,4 +1,4 @@
-package com.example.imerso.camerafeed;
+package com.camerafeed;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

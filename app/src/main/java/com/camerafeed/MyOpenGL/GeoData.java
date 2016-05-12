@@ -1,4 +1,4 @@
-package com.example.imerso.camerafeed.MyOpenGL;
+package com.camerafeed.MyOpenGL;
 
 import android.opengl.Matrix;
 import android.util.Log;
@@ -34,9 +34,44 @@ public class GeoData {
     }
 
     static public GeoData Box3D(){
-        GeoData creater = new GeoData();
+        GeoData creator = new GeoData();
+        creator.mVertices = createBoxVertices();
+        creator.mIndices = createBoxIndices();
+        return creator;
+    }
 
-        return creater;
+    private static short[] createBoxIndices() {
+        short[] indices = {
+                0, 1, 2,
+                2, 1, 3,
+                4, 0, 6,
+                6, 0, 2,
+                5, 1, 4,
+                4, 1, 0,
+                6, 2, 7,
+                7, 2, 3,
+                7, 3, 5,
+                5, 3, 1,
+                5, 4, 7,
+                7, 4, 6};
+
+        return indices;
+    }
+
+    private static float[] createBoxVertices() {
+        float[] vertices = {
+            // in counterclockwise order:
+            -0.5f, -0.5f, -0.5f, //BLB 0
+                    -0.5f, 0.5f, -0.5f,  //BLF 1
+                    0.5f, -0.5f, -0.5f,  //BRB 2
+                    0.5f, 0.5f, -0.5f,   //BRF 3
+                    -0.5f, -0.5f, 0.5f,  //TLB 4
+                    -0.5f, 0.5f, 0.5f,   //TLF 5
+                    0.5f, -0.5f, 0.5f,   //TRB 6
+                    0.5f, 0.5f, 0.5f     //TRF 7
+        };
+        return vertices;
+
     }
 
     static float[] createGridVertices(int width, int height) {
