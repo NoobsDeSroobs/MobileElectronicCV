@@ -36,7 +36,7 @@ public class VBO {
         mUseNormals = vertexNormals;
         mUseTexCoords = vertexTexCoords;
 
-        mNumComponents = 3;
+        mNumComponents = 3+3;
         if (mUseNormals) {
             mNumComponents += 3;
         }
@@ -82,6 +82,9 @@ public class VBO {
             GLES20.glEnableVertexAttribArray(Shader.TEX_POS);
         }
 
+        GLES20.glEnableVertexAttribArray(Shader.COLOR_POS);
+
+
         int offset = 0;
 
         GLES20.glVertexAttribPointer(
@@ -92,6 +95,15 @@ public class VBO {
                 mStride,                // stride: sizeof(float) * number of components
                 offset);                // offset 0; vertex starts at zero
         offset += 4 * 3;
+
+            GLES20.glVertexAttribPointer(
+                    Shader.COLOR_POS,
+                    3,
+                    GLES20.GL_FLOAT,
+                    false,
+                    mStride,
+                    offset);
+            offset += 4 * 3;
 
         if (mUseNormals) {
 
@@ -126,6 +138,8 @@ public class VBO {
         GLES20.glDisableVertexAttribArray(Shader.VERTEX_POS);
         GLES20.glDisableVertexAttribArray(Shader.NORMAL_POS);
         GLES20.glDisableVertexAttribArray(Shader.TEX_POS);
+        GLES20.glDisableVertexAttribArray(Shader.COLOR_POS);
+
     }
     static void createVertexBuffer(int target, float[] vertices, int bufferId) {
         int size = vertices.length * 4;

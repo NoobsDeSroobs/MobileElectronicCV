@@ -12,13 +12,14 @@ public class Shader {
     // - must be less than a maximum value
     static final int VERTEX_POS = 3;
     static final int NORMAL_POS = 4;
-    static final int TEX_POS = 5;
+    static final int COLOR_POS = 5;
+    static final int TEX_POS = 6;
+    static final int OFFSET = 7;
     static final String TAG = "VBOTest";
 
     private int mProgramId;
     private int mViewProjectionLoc;
     private int mLightVectorLoc;
-    private int mColorLoc;
     private int mEnableLightLoc;
 
 
@@ -26,15 +27,15 @@ public class Shader {
         mProgramId = loadProgram(kVertexShader, kFragmentShader);
         GLES20.glBindAttribLocation(mProgramId, Shader.VERTEX_POS, "position");
         GLES20.glBindAttribLocation(mProgramId, Shader.NORMAL_POS, "normal");
+        GLES20.glBindAttribLocation(mProgramId, Shader.COLOR_POS, "color");
         GLES20.glLinkProgram(mProgramId);
         mViewProjectionLoc =
                 GLES20.glGetUniformLocation(mProgramId, "worldViewProjection");
         mLightVectorLoc =
                 GLES20.glGetUniformLocation(mProgramId, "lightVector");
-        mColorLoc =
-                GLES20.glGetUniformLocation(mProgramId, "color");
         mEnableLightLoc =
                 GLES20.glGetUniformLocation(mProgramId, "enableLight");
+
 
         // Other state.
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -54,9 +55,9 @@ public class Shader {
     public void setLight(float[] transformedLightVector) {
         GLES20.glUniform3fv(mLightVectorLoc, 1, transformedLightVector, 0);
     }
-    public void setColor(float[] color) {
-        GLES20.glUniform3fv(mColorLoc, 1, color, 0);
-    }
+//    public void setColor(float[] color) {
+//        GLES20.glUniform3fv(mColorLoc, 1, color, 0);
+//    }
     public void enableLight(boolean val) {
         GLES20.glUniform1i(mEnableLightLoc, val ? 1 : 0);
     }
@@ -110,11 +111,14 @@ public class Shader {
             "uniform vec3 lightVector;                                  \n" +
             "attribute vec3 position;                                   \n" +
             "attribute vec3 normal;                                     \n" +
-            "attribute vec2 offset;                                 \n" +
+            "attribute vec3 color;                                      \n" +
+            "attribute vec2 offset;                                     \n" +
+            "varying vec3 colorFrag;                                    \n" +
             "varying float light;                                       \n" +
             "void main() {                                              \n" +
             // |lightVector| is in the model space, so the model
             // doesn't have to be transformed.
+            "  colorFrag = color;                                       \n" +
             "  light = max(dot(normal, lightVector), 0.0) + 0.2;        \n" +
             "  gl_Position = worldViewProjection * vec4(position.x+offset.x, position.y+offset.y, position.z, 1.0); \n" +
             "}";
@@ -122,14 +126,14 @@ public class Shader {
     private static final String kFragmentShader =
             "precision mediump float;                                   \n" +
             "uniform sampler2D textureSampler;                          \n" +
-            "uniform vec3 color;                                        \n" +
             "uniform int enableLight;                                   \n" +
+            "varying vec3 colorFrag;                                    \n" +
             "varying float light;                                       \n" +
             "void main() {                                              \n" +
             "  if (1 == enableLight) {                                  \n" +
-            "    gl_FragColor = light * vec4(color,1);                  \n" +
+            "    gl_FragColor = light * vec4(colorFrag,1);                  \n" +
             "  } else {                                                 \n" +
-            "    gl_FragColor = vec4(color,1);                          \n" +
+            "    gl_FragColor = vec4(colorFrag,1);                          \n" +
             "  }                                                        \n" +
             // "  gl_FragColor = light * vec4(0.1,0.7,0.0,1);               \n" +
             "}";

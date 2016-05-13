@@ -92,13 +92,8 @@ public class GoLRenderer implements GLSurfaceView.Renderer {
 
         mShader.enableLight(false);
 
-        //mShader.setColor(red);
-        //mVBO1.draw();
-
-        mShader.setColor(red);
         mVBOBox.draw();
 
-        mShader.setColor(brown);
         mVBOGrid.draw();
 
     }
