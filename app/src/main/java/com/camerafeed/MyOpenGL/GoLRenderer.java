@@ -18,7 +18,7 @@ package com.camerafeed.MyOpenGL;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import android.graphics.Point;
+import android.graphics.PointF;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 
@@ -37,7 +37,7 @@ public class GoLRenderer implements GLSurfaceView.Renderer {
     private Camera mCamera;
     private GameofLife GoL;
     private int gameWidth, gameHeight;
-    private Point ScreenSize;
+    private PointF ScreenSize;
 
     VBO mVBOGrid, mVBOBox, mVBOSquare;
     private boolean dirty;
@@ -46,7 +46,7 @@ public class GoLRenderer implements GLSurfaceView.Renderer {
     private float[] mLightVector = { 2/3.f, 1/3.f, 2/3.f };  // Needs to be normalized
     private float[] mTransformedLightVector = new float[3];
 
-    public GoLRenderer(Point size) {
+    public GoLRenderer(PointF size) {
         ScreenSize = size;
     }
 
@@ -150,7 +150,7 @@ public class GoLRenderer implements GLSurfaceView.Renderer {
         int desiredSquareSize = 20;
         int stride = paddingPixels+desiredSquareSize;
 
-        int size = (ScreenSize.x/stride)*(ScreenSize.y/stride);
+        int size = (int) ((ScreenSize.x/stride)*(ScreenSize.y/stride));
         squareOffsets = new float[size*2];
 
         int ctr = 0;

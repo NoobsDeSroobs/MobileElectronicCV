@@ -1,6 +1,6 @@
 package com.camerafeed.MyOpenGL;
 
-import android.graphics.Point;
+import android.graphics.PointF;
 import android.opengl.Matrix;
 import android.util.Log;
 
@@ -12,23 +12,22 @@ public class Camera {
     private float[] mProjectionMatrix = new float[16];
     private float[] mViewMatrix = new float[16];
     private float[] mViewProjectionMatrix = new float[16];
-    private float[] mCameraLocation = new float[4];
-    private float[] mCameraLocationPrev = new float[4];
-    private float[] mFocusLocation = {0, 0, 0};
-    private float[] mUpVector = {0, 1, 0};
+    private float[] mCameraLocation = {0, 0, 6, 1};
+    private float[] mCameraLocationPrev = {0, 0, 6, 1};
+    private float[] mFocusLocation = {0, 0, 1, 1};
+    private float[] mUpVector = {0, 1, 0, 1};
 
 
-    public Camera(Point screenSize){
-        mCameraLocation[2] = 60.0f;
-        mCameraLocationPrev[2] = 60.0f;
-        perspective(screenSize.x, screenSize.y);
+    public Camera(PointF screenSize){
+        perspective((int)screenSize.x, (int)screenSize.y);
     }
 
     // Updates mViewProjectionMatrix with the current camera position.
     public void updateMatrices() {
         //setLookAtM(float[] rm, int rmOffset, float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ)
         Matrix.setLookAtM(mViewMatrix, 0, mCameraLocation[0], mCameraLocation[1], mCameraLocation[2],
-                mFocusLocation[0], mFocusLocation[1], mFocusLocation[2], mUpVector[0], mUpVector[1], mUpVector[2]);
+                mCameraLocation[0]-mFocusLocation[0], mCameraLocation[1]-mFocusLocation[1], mCameraLocation[2]-mFocusLocation[2],
+                mUpVector[0], mUpVector[1], mUpVector[2]);
         //Matrix.translateM(mViewMatrix, 0, 0, 0, -mZ);
         //Matrix.rotateM(mViewMatrix, 0, mPhi, 0, 1, 0);
         //Matrix.rotateM(mViewMatrix, 0, 45, 1, 0, 0);
@@ -83,15 +82,51 @@ public class Camera {
     }
 
     public void saveCamera(){
-        mCameraLocationPrev[0] = mCameraLocation[0];
-        mCameraLocationPrev[1] = mCameraLocation[1];
-        mCameraLocationPrev[2] = mCameraLocation[2];
+        double camDist = Math.sqrt(Math.pow(mCameraLocation[0], 2) + Math.pow(mCameraLocation[1], 2) + Math.pow(mCameraLocation[2], 2));
+        if (camDist > 0.1) {
+            Log.i("Gesture", "Saved: " + camDist);
+            mCameraLocationPrev[0] = mCameraLocation[0];
+            mCameraLocationPrev[1] = mCameraLocation[1];
+            mCameraLocationPrev[2] = mCameraLocation[2];
+        }
     }
 
     public void zoom(float scale) {
         mCameraLocation[0] = mCameraLocationPrev[0] * scale;
         mCameraLocation[1] = mCameraLocationPrev[1] * scale;
         mCameraLocation[2] = mCameraLocationPrev[2] * scale;
-        Log.i("Gesture", "Zoomed to " + mCameraLocation[0] + ", " + mCameraLocation[1] + ", " + mCameraLocation[0]);
+    }
+
+    public void rotate(PointF dir) {
+//        if (dir.x < 0.2 && dir.x > -0.2 && dir.y < 0.2 && dir.y > 0.2){
+//            return;
+//        }
+        Log.i("Rotation", "X: " + dir.x + ", Y: " + dir.y);
+        float[] tempM = new float[16];
+        Matrix.setIdentityM(tempM, 0);
+        float[] axis = new float[4];
+        axis[3] = 1;
+        cross(mFocusLocation, mUpVector, axis);
+        normalize(axis);
+        Matrix.rotateM(tempM, 0, -dir.y, axis[0], axis[1], axis[2]);
+        Matrix.multiplyMV(mFocusLocation, 0, tempM, 0, mFocusLocation, 0);
+        Log.i("Rotation", "VecX: " + mFocusLocation[0] + ", VecY: " + mFocusLocation[1] + ", VecZ: " + mFocusLocation[2] + ", VecA: " + mFocusLocation[3]);
+        Matrix.setIdentityM(tempM, 0);
+        Matrix.rotateM(tempM, 0, dir.x, mUpVector[0], mUpVector[1], mUpVector[2]);
+        Matrix.multiplyMV(mFocusLocation, 0, tempM, 0, mFocusLocation, 0);
+
+    }
+
+    private void normalize(float[] axis) {
+        float length = (float)Math.sqrt(Math.pow(axis[0], 2) + Math.pow(axis[0], 2) + Math.pow(axis[0], 2));
+        axis[0] /= length;
+        axis[1] /= length;
+        axis[2] /= length;
+    }
+
+    void cross(float[] p1, float[] p2, float[] result) {
+        result[0] = p1[1] * p2[2] - p2[1] * p1[2];
+        result[1] = p1[2] * p2[0] - p2[2] * p1[0];
+        result[2] = p1[0] * p2[1] - p2[0] * p1[1];
     }
 }

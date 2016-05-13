@@ -3,6 +3,7 @@ package com.camerafeed.Frags;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Point;
+import android.graphics.PointF;
 import android.net.Uri;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.camerafeed.MyOpenGL.GoLRenderer;
 public class IlluminatedSquaresFragments extends Fragment {
     private OnFragmentInteractionListener mListener;
     GameofLife GoL;
+    PointF screenSize;
 
     public IlluminatedSquaresFragments() {
         // Required empty public constructor
@@ -37,9 +39,12 @@ public class IlluminatedSquaresFragments extends Fragment {
         GoL = new GameofLife(GoLX, GoLY);
 
         GLSurfaceView glSurfaceView = new GLSurfaceView(getActivity());
+        screenSize = new PointF();
         Point p = new Point();
         getActivity().getWindowManager().getDefaultDisplay().getSize(p);
-        final GoLRenderer renderer = new GoLRenderer(p);
+        screenSize.x = p.x;
+        screenSize.y = p.y;
+        final GoLRenderer renderer = new GoLRenderer(screenSize);
         renderer.init(GoL, GoLX, GoLY);
         glSurfaceView.setEGLContextClientVersion(2);
         glSurfaceView.setRenderer(renderer);
@@ -54,13 +59,12 @@ public class IlluminatedSquaresFragments extends Fragment {
             int mode = NONE;
 
 
-            float oldDist = 0f;
-            Point oldPosition = new Point();
+            float oldDist = 5f;
+            PointF oldPosition = new PointF();
             int extraFingerID = 0;
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Log.i("Gesture", ("Event action: " + event.getAction()));
                 switch (event.getActionMasked()) {
                     case MotionEvent.ACTION_DOWN:
 
@@ -70,14 +74,13 @@ public class IlluminatedSquaresFragments extends Fragment {
                         if(extraFingerID == 0) {
                             extraFingerID = event.getPointerId(event.getActionIndex());
                             oldDist = getSpacing(event, 0, extraFingerID);
-                            Log.i("Gesture", "Dist: " + oldDist);
                             if (oldDist > 10f) {
                                 mode = ZOOM;
                             }
                         }
                         break;
                     case MotionEvent.ACTION_POINTER_UP:
-                        if (event.getPointerCount()<2) {
+                        if (event.getPointerCount()<3) {
                             mode = NONE;
                             extraFingerID = 0;
                             renderer.getCamera().saveCamera();
@@ -88,14 +91,15 @@ public class IlluminatedSquaresFragments extends Fragment {
                             float newDist = getSpacing(event, 0, extraFingerID);
                             // If you want to tweak font scaling, this is the place to go.
                             if (newDist > 10f) {
-                                float scale = newDist / oldDist;
-                                Log.i("Gesture", "Zoomed to " + scale);
+                                float scale = oldDist/newDist ;
                                 renderer.getCamera().zoom(scale);
                             }
                         }else{
                             //Move the camera
-                            Point newPos = new Point((int)event.getX(), (int)event.getY());
-                            Point dir = new Point(newPos.x - oldPosition.x, newPos.y - oldPosition.y);
+                            PointF newPos = new PointF((int)event.getX(), (int)event.getY());
+                            PointF dir = new PointF(((newPos.x - oldPosition.x)/screenSize.x)*60, ((newPos.y - oldPosition.y)/screenSize.y)*60);
+                            oldPosition = newPos;
+                            renderer.getCamera().rotate(dir);
                         }
                         break;
                 }
@@ -143,58 +147,3 @@ public class IlluminatedSquaresFragments extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 }
-
-
-/*
-*  implements GestureDetector.OnDoubleTapListener, GestureDetector.OnGestureListener
-    @Override
-    public boolean onSingleTapConfirmed(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public boolean onDoubleTap(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public boolean onDoubleTapEvent(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public boolean onDown(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-    }
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        return false;
-    }
-
-    //////////////// End Gestures ////////////////
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        this.GestDetect.onTouchEvent(event);
-        return super.onTouchEvent(event);
-    }
-* */
