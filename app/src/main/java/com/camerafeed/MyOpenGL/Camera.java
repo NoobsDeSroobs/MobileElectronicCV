@@ -1,6 +1,8 @@
 package com.camerafeed.MyOpenGL;
 
+import android.graphics.Point;
 import android.opengl.Matrix;
+import android.util.Log;
 
 /**
  * Created by NoobsDeSroobs on 11-May-16.
@@ -10,12 +12,23 @@ public class Camera {
     private float[] mProjectionMatrix = new float[16];
     private float[] mViewMatrix = new float[16];
     private float[] mViewProjectionMatrix = new float[16];
+    private float[] mCameraLocation = new float[4];
+    private float[] mCameraLocationPrev = new float[4];
+    private float[] mFocusLocation = {0, 0, 0};
+    private float[] mUpVector = {0, 1, 0};
 
+
+    public Camera(Point screenSize){
+        mCameraLocation[2] = 60.0f;
+        mCameraLocationPrev[2] = 60.0f;
+        perspective(screenSize.x, screenSize.y);
+    }
 
     // Updates mViewProjectionMatrix with the current camera position.
     public void updateMatrices() {
         //setLookAtM(float[] rm, int rmOffset, float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ)
-        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 60.0f, 0, 0, 0, 0, 1f, 0);
+        Matrix.setLookAtM(mViewMatrix, 0, mCameraLocation[0], mCameraLocation[1], mCameraLocation[2],
+                mFocusLocation[0], mFocusLocation[1], mFocusLocation[2], mUpVector[0], mUpVector[1], mUpVector[2]);
         //Matrix.translateM(mViewMatrix, 0, 0, 0, -mZ);
         //Matrix.rotateM(mViewMatrix, 0, mPhi, 0, 1, 0);
         //Matrix.rotateM(mViewMatrix, 0, 45, 1, 0, 0);
@@ -65,6 +78,20 @@ public class Camera {
     }
 
     public void use(Shader shader) {
+        updateMatrices();
         shader.setCamera(mViewProjectionMatrix);
+    }
+
+    public void saveCamera(){
+        mCameraLocationPrev[0] = mCameraLocation[0];
+        mCameraLocationPrev[1] = mCameraLocation[1];
+        mCameraLocationPrev[2] = mCameraLocation[2];
+    }
+
+    public void zoom(float scale) {
+        mCameraLocation[0] = mCameraLocationPrev[0] * scale;
+        mCameraLocation[1] = mCameraLocationPrev[1] * scale;
+        mCameraLocation[2] = mCameraLocationPrev[2] * scale;
+        Log.i("Gesture", "Zoomed to " + mCameraLocation[0] + ", " + mCameraLocation[1] + ", " + mCameraLocation[0]);
     }
 }

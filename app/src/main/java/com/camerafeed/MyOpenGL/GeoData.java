@@ -42,18 +42,18 @@ public class GeoData {
 
     private static short[] createBoxIndices() {
         short[] indices = {
-                0, 1, 2,
-                2, 1, 3,
-                4, 0, 6,
-                6, 0, 2,
-                5, 1, 4,
-                4, 1, 0,
-                6, 2, 7,
-                7, 2, 3,
-                7, 3, 5,
-                5, 3, 1,
-                5, 4, 7,
-                7, 4, 6};
+                1, 0, 2,
+                1, 2, 3,
+                0, 4, 6,
+                0, 6, 2,
+                1, 5, 4,
+                1, 4, 0,
+                2, 6, 7,
+                2, 7, 3,
+                3, 7, 5,
+                3, 5, 1,
+                4, 5, 7,
+                4, 7, 6};
 
         return indices;
     }
@@ -62,13 +62,13 @@ public class GeoData {
         float[] vertices = {
             // in counterclockwise order:
             -0.5f, -0.5f, -0.5f, //BLB 0
-                    -0.5f, 0.5f, -0.5f,  //BLF 1
-                    0.5f, -0.5f, -0.5f,  //BRB 2
-                    0.5f, 0.5f, -0.5f,   //BRF 3
-                    -0.5f, -0.5f, 0.5f,  //TLB 4
-                    -0.5f, 0.5f, 0.5f,   //TLF 5
-                    0.5f, -0.5f, 0.5f,   //TRB 6
-                    0.5f, 0.5f, 0.5f     //TRF 7
+            -0.5f, 0.5f, -0.5f,  //BLF 1
+            0.5f, -0.5f, -0.5f,  //BRB 2
+            0.5f, 0.5f, -0.5f,   //BRF 3
+            -0.5f, -0.5f, 0.5f,  //TLB 4
+            -0.5f, 0.5f, 0.5f,   //TLF 5
+            0.5f, -0.5f, 0.5f,   //TRB 6
+            0.5f, 0.5f, 0.5f     //TRF 7
         };
         return vertices;
 
@@ -187,5 +187,31 @@ public class GeoData {
             indices[i] = i;
         }
         return indices;
+    }
+
+    public static GeoData square() {
+        GeoData creator = new GeoData();
+        creator.mVertices = createSquareVertices();
+        creator.mIndices = createSquareIndices();
+        return creator;
+    }
+
+    private static short[] createSquareIndices() {
+        short[] indices = {
+                0, 1, 3,
+                3, 1, 2
+        };
+        return indices;
+    }
+
+    private static float[] createSquareVertices() {
+        float[] vertices = {
+                -0.5f, 0.5f, 0,
+                -0.5f, -0.5f, 0,
+                0.5f, -0.5f, 0,
+                0.5f, 0.5f, 0,
+
+        };
+        return vertices;
     }
 }

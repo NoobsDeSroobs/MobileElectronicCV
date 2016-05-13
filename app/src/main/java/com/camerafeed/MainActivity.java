@@ -16,22 +16,20 @@ import com.camerafeed.Frags.IlluminatedSquaresFragments;
 import com.camerafeed.Frags.MenuFragment;
 
 
-public class MainActivity extends AppCompatActivity implements GestureDetector.OnDoubleTapListener, GestureDetector.OnGestureListener, MenuFragment.MenuFragmentInterface{
+public class MainActivity extends AppCompatActivity implements MenuFragment.MenuFragmentInterface{
 
-    GestureDetector GestDetect;
     FragmentManager fm;
     CollapsableCV CCV = new CollapsableCV();
     FrontPageFragment FPF = new FrontPageFragment();
     IlluminatedSquaresFragments IllSqrFrag = new IlluminatedSquaresFragments();
     MenuFragment MF = new MenuFragment();
 
-    private OpenGLActivity mGLView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        GestDetect = new GestureDetector(this, this);
         fm = getFragmentManager();
         Toolbar myToolbar = (Toolbar) findViewById(R.id.ActionBar);
         setSupportActionBar(myToolbar);
@@ -56,69 +54,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     }
 //////////////// Begin Gestures ////////////////
 
-            @Override
-    public boolean onSingleTapConfirmed(MotionEvent e) {
-            //GestureInformer.setText("onSingleTapConfirmed");
-            return false;
-        }
-
-    @Override
-    public boolean onDoubleTap(MotionEvent e) {
-           // GestureInformer.setText("onDoubleTap");
-            return false;
-        }
-
-    @Override
-    public boolean onDoubleTapEvent(MotionEvent e) {
-            //GestureInformer.setText("onDoubleTapEvent");
-            return false;
-        }
-
-    @Override
-    public boolean onDown(MotionEvent e) {
-            //GestureInformer.setText("onDown");
-            return false;
-        }
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-            //GestureInformer.setText("onShowPress");
-        }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-            //GestureInformer.setText("onSingleTapUp");
-            return false;
-        }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            //GestureInformer.setText("onScroll");
-            return false;
-        }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-            //GestureInformer.setText("onLongPress");
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.ReplaceFragment, CCV);
-        ft.commit();
-        //Change Activity
-    }
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            ///GestureInformer.setText("onFling");
-            return false;
-        }
-
-    //////////////// End Gestures ////////////////
-
-            @Override
-    public boolean onTouchEvent(MotionEvent event) {
-            this.GestDetect.onTouchEvent(event);
-            return super.onTouchEvent(event);
-        }
 
     @Override
     public void DoAction(MenuFragment.MenuOptions actionID) {

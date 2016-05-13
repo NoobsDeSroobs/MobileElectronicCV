@@ -104,9 +104,9 @@ public class Box3D {
 //
 //
 //        // prepare shaders and OpenGL program
-//        int vertexShader = MyGLRenderer.loadShader(
+//        int vertexShader = GoLRenderer.loadShader(
 //                GLES20.GL_VERTEX_SHADER, vertexShaderCode);
-//        int fragmentShader = MyGLRenderer.loadShader(
+//        int fragmentShader = GoLRenderer.loadShader(
 //                GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
 //
 //        mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
@@ -117,10 +117,10 @@ public class Box3D {
 //        // Enable a handle to the triangle vertices
 //        GLES20.glEnableVertexAttribArray(mPositionHandle);
 //        GLES20.glLinkProgram(mProgram);
-//        MyGLRenderer.checkGlError("Linked shaders");
+//        GoLRenderer.checkGlError("Linked shaders");
 //        // get handle to vertex shader's vPosition member
 //        mPositionHandle = GLES20.glGetAttribLocation(mProgram, "vPosition");
-//        MyGLRenderer.checkGlError("Get attrib");
+//        GoLRenderer.checkGlError("Get attrib");
 //
 //
 //        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vbo[0]);
@@ -129,7 +129,7 @@ public class Box3D {
 //        GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, ibo[0]);
 //        GLES20.glBufferData(GLES20.GL_ELEMENT_ARRAY_BUFFER, indexBuffer.capacity() * 2, indexBuffer, GLES20.GL_STATIC_DRAW);
 //
-//        MyGLRenderer.checkGlError("Buffered buffers");                 // create OpenGL program executables
+//        GoLRenderer.checkGlError("Buffered buffers");                 // create OpenGL program executables
     }
 
     /**
@@ -152,7 +152,7 @@ public class Box3D {
 //                0, vertexBuffer);
 //
 //
-//        MyGLRenderer.checkGlError("Loaded all data");
+//        GoLRenderer.checkGlError("Loaded all data");
 //        // get handle to fragment shader's vColor member
 //        mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
 //
@@ -161,11 +161,11 @@ public class Box3D {
 //
 //        // get handle to shape's transformation matrix
 //        mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
-//        //MyGLRenderer.checkGlError("glGetUniformLocation");
+//        //GoLRenderer.checkGlError("glGetUniformLocation");
 //
 //        // Apply the projection and view transformation
 //        GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
-//        //MyGLRenderer.checkGlError("glUniformMatrix4fv");
+//        //GoLRenderer.checkGlError("glUniformMatrix4fv");
 //
 //        GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, ibo[0]);
 //        // Draw the triangle

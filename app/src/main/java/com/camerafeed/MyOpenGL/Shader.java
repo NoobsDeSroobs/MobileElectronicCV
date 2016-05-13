@@ -106,32 +106,33 @@ public class Shader {
 
     private static final String kVertexShader =
             "precision mediump float;                                   \n" +
-                    "uniform mat4 worldViewProjection;                          \n" +
-                    "uniform vec3 lightVector;                                  \n" +
-                    "attribute vec3 position;                                   \n" +
-                    "attribute vec3 normal;                                     \n" +
-                    "varying float light;                                       \n" +
-                    "void main() {                                              \n" +
-                    // |lightVector| is in the model space, so the model
-                    // doesn't have to be transformed.
-                    "  light = max(dot(normal, lightVector), 0.0) + 0.2;        \n" +
-                    "  gl_Position = worldViewProjection * vec4(position, 1.0); \n" +
-                    "}";
+            "uniform mat4 worldViewProjection;                          \n" +
+            "uniform vec3 lightVector;                                  \n" +
+            "attribute vec3 position;                                   \n" +
+            "attribute vec3 normal;                                     \n" +
+            "attribute vec2 offset;                                 \n" +
+            "varying float light;                                       \n" +
+            "void main() {                                              \n" +
+            // |lightVector| is in the model space, so the model
+            // doesn't have to be transformed.
+            "  light = max(dot(normal, lightVector), 0.0) + 0.2;        \n" +
+            "  gl_Position = worldViewProjection * vec4(position.x+offset.x, position.y+offset.y, position.z, 1.0); \n" +
+            "}";
 
     private static final String kFragmentShader =
             "precision mediump float;                                   \n" +
-                    "uniform sampler2D textureSampler;                          \n" +
-                    "uniform vec3 color;                                        \n" +
-                    "uniform int enableLight;                                   \n" +
-                    "varying float light;                                       \n" +
-                    "void main() {                                              \n" +
-                    "  if (1 == enableLight) {                                  \n" +
-                    "    gl_FragColor = light * vec4(color,1);                  \n" +
-                    "  } else {                                                 \n" +
-                    "    gl_FragColor = vec4(color,1);                          \n" +
-                    "  }                                                        \n" +
-                    // "  gl_FragColor = light * vec4(0.1,0.7,0.0,1);               \n" +
-                    "}";
+            "uniform sampler2D textureSampler;                          \n" +
+            "uniform vec3 color;                                        \n" +
+            "uniform int enableLight;                                   \n" +
+            "varying float light;                                       \n" +
+            "void main() {                                              \n" +
+            "  if (1 == enableLight) {                                  \n" +
+            "    gl_FragColor = light * vec4(color,1);                  \n" +
+            "  } else {                                                 \n" +
+            "    gl_FragColor = vec4(color,1);                          \n" +
+            "  }                                                        \n" +
+            // "  gl_FragColor = light * vec4(0.1,0.7,0.0,1);               \n" +
+            "}";
 
 
     public void clearView() {
