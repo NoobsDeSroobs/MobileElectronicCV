@@ -92,8 +92,18 @@ public class GoLRenderer implements GLSurfaceView.Renderer {
 
         mShader.enableLight(false);
 
-        mVBOBox.draw();
-
+        for (int y = 0; y < GoL.boardHeight; y+=1) {
+            for (int x = 0; x < GoL.boardWidth; x+=1) {
+                if(GoL.board[y*GoL.boardWidth+x] == GameofLife.STATUS.DEAD.getDead()){
+                    continue;
+                }
+                float[] a = {x-15+0.5f, -(y-15+0.5f)};
+                mShader.setOffset(a);
+                mVBOBox.draw();
+            }
+        }
+        float[] a = {0, 0};
+        mShader.setOffset(a);
         mVBOGrid.draw();
 
     }
@@ -117,7 +127,7 @@ public class GoLRenderer implements GLSurfaceView.Renderer {
         GeoData data = GeoData.Box3D();
         mVBOBox = new VBO(data.mVertices, data.mIndices, GLES20.GL_TRIANGLES, false, false, -1);
 
-        data = GeoData.grid();
+        data = GeoData.grid(GoL.boardWidth, GoL.boardHeight);
         mVBOGrid = new VBO(data.mVertices, data.mIndices, GLES20.GL_LINES, false, false, -1);
 
         data = GeoData.square();

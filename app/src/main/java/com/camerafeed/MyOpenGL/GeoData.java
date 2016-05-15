@@ -29,10 +29,10 @@ public class GeoData {
         return creator;
     }
 
-    static public GeoData grid() {
+    static public GeoData grid(int width, int height) {
         GeoData creator = new GeoData();
-        creator.mVertices = createGridVertices(30, 30);
-        creator.mIndices = createGridIndices(30, 30);
+        creator.mVertices = createGridVertices(width+1, height+1);
+        creator.mIndices = createGridIndices(width+1, height+1);
         return creator;
     }
 

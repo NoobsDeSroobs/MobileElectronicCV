@@ -14,13 +14,13 @@ public class Shader {
     static final int NORMAL_POS = 4;
     static final int COLOR_POS = 5;
     static final int TEX_POS = 6;
-    static final int OFFSET = 7;
     static final String TAG = "VBOTest";
 
     private int mProgramId;
     private int mViewProjectionLoc;
     private int mLightVectorLoc;
     private int mEnableLightLoc;
+    private int mOffset;
 
 
     Shader() {
@@ -35,6 +35,8 @@ public class Shader {
                 GLES20.glGetUniformLocation(mProgramId, "lightVector");
         mEnableLightLoc =
                 GLES20.glGetUniformLocation(mProgramId, "enableLight");
+        mOffset =
+                GLES20.glGetUniformLocation(mProgramId, "offset");
 
 
         // Other state.
@@ -55,9 +57,9 @@ public class Shader {
     public void setLight(float[] transformedLightVector) {
         GLES20.glUniform3fv(mLightVectorLoc, 1, transformedLightVector, 0);
     }
-//    public void setColor(float[] color) {
-//        GLES20.glUniform3fv(mColorLoc, 1, color, 0);
-//    }
+    public void setOffset(float[] offset) {
+        GLES20.glUniform2fv(mOffset, 1, offset, 0);
+    }
     public void enableLight(boolean val) {
         GLES20.glUniform1i(mEnableLightLoc, val ? 1 : 0);
     }
@@ -112,7 +114,7 @@ public class Shader {
             "attribute vec3 position;                                   \n" +
             "attribute vec3 normal;                                     \n" +
             "attribute vec3 color;                                      \n" +
-            "attribute vec2 offset;                                     \n" +
+            "uniform vec2 offset;                                     \n" +
             "varying vec3 colorFrag;                                    \n" +
             "varying float light;                                       \n" +
             "void main() {                                              \n" +

@@ -19,8 +19,9 @@ import com.camerafeed.MyOpenGL.GoLRenderer;
 
 public class IlluminatedSquaresFragments extends Fragment {
     private OnFragmentInteractionListener mListener;
-    GameofLife GoL;
-    PointF screenSize;
+    private GameofLife GoL;
+    private PointF screenSize;
+    private GoLRenderer renderer;
 
     public IlluminatedSquaresFragments() {
         // Required empty public constructor
@@ -29,6 +30,7 @@ public class IlluminatedSquaresFragments extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -44,7 +46,7 @@ public class IlluminatedSquaresFragments extends Fragment {
         getActivity().getWindowManager().getDefaultDisplay().getSize(p);
         screenSize.x = p.x;
         screenSize.y = p.y;
-        final GoLRenderer renderer = new GoLRenderer(screenSize);
+        renderer = new GoLRenderer(screenSize);
         renderer.init(GoL, GoLX, GoLY);
         glSurfaceView.setEGLContextClientVersion(2);
         glSurfaceView.setRenderer(renderer);
@@ -68,10 +70,10 @@ public class IlluminatedSquaresFragments extends Fragment {
                 switch (event.getActionMasked()) {
                     case MotionEvent.ACTION_DOWN:
 
-                        oldPosition.set((int)event.getX(), (int)event.getY());
+                        oldPosition.set((int) event.getX(), (int) event.getY());
                         break;
                     case MotionEvent.ACTION_POINTER_DOWN:
-                        if(extraFingerID == 0) {
+                        if (extraFingerID == 0) {
                             extraFingerID = event.getPointerId(event.getActionIndex());
                             oldDist = getSpacing(event, 0, extraFingerID);
                             if (oldDist > 10f) {
@@ -80,7 +82,7 @@ public class IlluminatedSquaresFragments extends Fragment {
                         }
                         break;
                     case MotionEvent.ACTION_POINTER_UP:
-                        if (event.getPointerCount()<3) {
+                        if (event.getPointerCount() < 3) {
                             mode = NONE;
                             extraFingerID = 0;
                             renderer.getCamera().saveCamera();
@@ -91,13 +93,13 @@ public class IlluminatedSquaresFragments extends Fragment {
                             float newDist = getSpacing(event, 0, extraFingerID);
                             // If you want to tweak font scaling, this is the place to go.
                             if (newDist > 10f) {
-                                float scale = oldDist/newDist ;
+                                float scale = oldDist / newDist;
                                 renderer.getCamera().zoom(scale);
                             }
-                        }else{
+                        } else {
                             //Move the camera
-                            PointF newPos = new PointF((int)event.getX(), (int)event.getY());
-                            PointF dir = new PointF(((newPos.x - oldPosition.x)/screenSize.x)*60, ((newPos.y - oldPosition.y)/screenSize.y)*60);
+                            PointF newPos = new PointF((int) event.getX(), (int) event.getY());
+                            PointF dir = new PointF(((newPos.x - oldPosition.x) / screenSize.x) * 60, ((newPos.y - oldPosition.y) / screenSize.y) * 60);
                             oldPosition = newPos;
                             renderer.getCamera().rotate(dir);
                         }
@@ -107,15 +109,33 @@ public class IlluminatedSquaresFragments extends Fragment {
             }
 
             private float getSpacing(MotionEvent event, int pointIndex1, int pointIndex2) {
-                if(event.getPointerCount() < 2){
+                if (event.getPointerCount() < 2) {
                     return 1f;
                 }
                 float x = event.getX(pointIndex1) - event.getX(pointIndex2);
                 float y = event.getY(pointIndex1) - event.getY(pointIndex2);
-                return (float)Math.sqrt(x * x + y * y);
+                return (float) Math.sqrt(x * x + y * y);
             }
 
         });
+
+
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while(true) {
+                        sleep(500);
+                        GoL.tick();
+                        renderer.update();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        thread.start();
 
         return glSurfaceView;
     }
