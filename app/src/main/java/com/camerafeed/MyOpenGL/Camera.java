@@ -12,9 +12,9 @@ public class Camera {
     private float[] mProjectionMatrix = new float[16];
     private float[] mViewMatrix = new float[16];
     private float[] mViewProjectionMatrix = new float[16];
-    private float[] mCameraLocation = {0, 0, 6, 1};
-    private float[] mCameraLocationPrev = {0, 0, 6, 1};
-    private float[] mFocusLocation = {0, 0, 1, 1};
+    private float[] mCameraLocation = {0, 0, 60, 1};
+    private float[] mCameraLocationPrev = {0, 0, 60, 1};
+    private float[] mFocusLocation = {0, 0, 0, 1};
     private float[] mUpVector = {0, 1, 0, 1};
 
 
@@ -26,7 +26,7 @@ public class Camera {
     public void updateMatrices() {
         //setLookAtM(float[] rm, int rmOffset, float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ)
         Matrix.setLookAtM(mViewMatrix, 0, mCameraLocation[0], mCameraLocation[1], mCameraLocation[2],
-                0, 0, 0, //mCameraLocation[0]-mFocusLocation[0], mCameraLocation[1]-mFocusLocation[1], mCameraLocation[2]-mFocusLocation[2],
+                mFocusLocation[0], mFocusLocation[1], mFocusLocation[2],
                 mUpVector[0], mUpVector[1], mUpVector[2]);
         //Matrix.translateM(mViewMatrix, 0, 0, 0, -mZ);
         //Matrix.rotateM(mViewMatrix, 0, mPhi, 0, 1, 0);
@@ -44,7 +44,7 @@ public class Camera {
         perspectiveM(
                 mProjectionMatrix,
                 (float)Math.toRadians(45),
-                aspect, 0.1f, 100f);
+                aspect, 0.1f, 1000f);
         // aspect, 0.5f, 5.f);
         updateMatrices();
     }
@@ -112,6 +112,7 @@ public class Camera {
         Matrix.rotateM(tempM, 0, -dir.x, mUpVector[0], mUpVector[1], mUpVector[2]);
         Matrix.multiplyMV(mCameraLocation, 0, tempM, 0, mCameraLocation, 0);
 
+
         saveCamera();
     }
 
@@ -126,5 +127,18 @@ public class Camera {
         result[0] = p1[1] * p2[2] - p2[1] * p1[2];
         result[1] = p1[2] * p2[0] - p2[2] * p1[0];
         result[2] = p1[0] * p2[1] - p2[0] * p1[1];
+    }
+
+    public void move(int pan, int tilt) {
+        mCameraLocation[0] += pan/10;
+        mCameraLocation[1] -= tilt/10;
+        mFocusLocation[0] += pan/10;
+        mFocusLocation[1] -= tilt/10;
+        saveCamera();
+        updateMatrices();
+    }
+
+    public float[] getFocalPoint() {
+        return mFocusLocation;
     }
 }

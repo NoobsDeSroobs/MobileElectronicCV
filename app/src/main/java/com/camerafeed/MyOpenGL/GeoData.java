@@ -31,8 +31,8 @@ public class GeoData {
 
     static public GeoData grid(int width, int height) {
         GeoData creator = new GeoData();
-        creator.mVertices = createGridVertices(width+1, height+1);
-        creator.mIndices = createGridIndices(width+1, height+1);
+        creator.mVertices = createGridVertices(width + 1, height + 1);
+        creator.mIndices = createGridIndices(width + 1, height + 1);
         return creator;
     }
 
@@ -41,6 +41,13 @@ public class GeoData {
         creator.mVertices = createBoxVertices();
         creator.mIndices = createBoxIndices();
         return creator;
+    }
+    public void setColor(float[] color) {
+        for (int i = 0; i < mVertices.length; i+=6) {
+            mVertices[i+3] = color[0];
+            mVertices[i+4] = color[1];
+            mVertices[i+5] = color[2];
+        }
     }
 
     private static short[] createBoxIndices() {

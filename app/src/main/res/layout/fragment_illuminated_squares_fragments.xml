@@ -1,13 +1,45 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Frags.IlluminatedSquaresFragments">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+    <android.opengl.GLSurfaceView
+        android:id="@+id/OpenGLView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"/>
+
+    <com.camerafeed.Views.JoystickView
+        android:id="@+id/JoyStick"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <SeekBar
+            android:layout_width="278dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/seekBar"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_alignParentEnd="true"
+            android:max="100"
+            android:progress="20" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Step"
+            android:id="@+id/StepButton"
+            android:layout_alignParentTop="true"
+            android:textColor="#ff0000"
+            android:background="#00009db9" />
+    </LinearLayout>
+
+</RelativeLayout>

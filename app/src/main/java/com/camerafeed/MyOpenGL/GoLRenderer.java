@@ -39,7 +39,7 @@ public class GoLRenderer implements GLSurfaceView.Renderer {
     private int gameWidth, gameHeight;
     private PointF ScreenSize;
 
-    VBO mVBOGrid, mVBOBox, mVBOSquare;
+    VBO mVBOGrid, mVBOBox, mVBOSquare, mVBOFocalPoint;
     private boolean dirty;
 
     private float[] squareOffsets;
@@ -49,6 +49,8 @@ public class GoLRenderer implements GLSurfaceView.Renderer {
     public GoLRenderer(PointF size) {
         ScreenSize = size;
     }
+
+
 
     public void init(GameofLife gol, int gameWidth, int gameHeight){
         GoL = gol;
@@ -92,6 +94,10 @@ public class GoLRenderer implements GLSurfaceView.Renderer {
 
         mShader.enableLight(false);
 
+        float[] b = {mCamera.getFocalPoint()[0], mCamera.getFocalPoint()[1]};
+        mShader.setOffset(b);
+        mVBOFocalPoint.draw();
+
         for (int y = 0; y < GoL.boardHeight; y+=1) {
             for (int x = 0; x < GoL.boardWidth; x+=1) {
                 if(GoL.board[y*GoL.boardWidth+x] == GameofLife.STATUS.DEAD.getDead()){
@@ -102,9 +108,7 @@ public class GoLRenderer implements GLSurfaceView.Renderer {
                 mVBOBox.draw();
             }
         }
-        float[] a = {0, 0};
-        mShader.setOffset(a);
-        mVBOGrid.draw();
+        //mVBOGrid.draw();
 
     }
     static float[] green = {0.2f,1,0.2f};
@@ -132,6 +136,11 @@ public class GoLRenderer implements GLSurfaceView.Renderer {
 
         data = GeoData.square();
         mVBOSquare = new VBO(data.mVertices, data.mIndices, GLES20.GL_LINES, false, false, -1);
+
+        data = GeoData.Box3D();
+        float[] color = {255, 0, 0};
+        data.setColor(color);
+        mVBOFocalPoint = new VBO(data.mVertices, data.mIndices, GLES20.GL_LINES, false, false, -1);
     }
 
     // This is called when the surface changes, e.g. after screen rotation.

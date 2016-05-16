@@ -38,11 +38,59 @@ public class GameofLife {
             board[i] = STATUS.DEAD.value;
         }
 
-        board[1] = STATUS.ALIVE.value;
-        board[width+2] = STATUS.ALIVE.value;
-        board[2*width] = STATUS.ALIVE.value;
-        board[2*width+1] = STATUS.ALIVE.value;
-        board[2*width+2] = STATUS.ALIVE.value;
+        short[] GosperGliderGun = {
+                1, 7,
+                1, 8,
+                2, 7,
+                2, 8,
+                11, 4,
+                11, 5,
+                11, 7,
+                11, 9,
+                11, 10,
+                13, 4,
+                13, 10,
+                15, 5,
+                15, 6,
+                15, 8,
+                15, 9,
+                16, 7,
+                23, 4,
+                23, 5,
+                23, 6,
+                24, 3,
+                24, 7,
+                26, 2,
+                26, 8,
+                27, 2,
+                27, 3,
+                27, 7,
+                27, 8,
+                30, 5,
+                31, 4,
+                31, 6,
+                32, 4,
+                32, 6,
+                33, 4,
+                34, 4,
+                35, 4,
+                35, 7,
+                36, 5,
+                36, 6
+        };
+
+        for (int i = 0; i < GosperGliderGun.length; i+=2) {
+            int x = GosperGliderGun[i];
+            int y = GosperGliderGun[i+1];
+
+            board[y*width+x] = STATUS.ALIVE.value;
+        }
+
+//        board[1] = STATUS.ALIVE.value;
+//        board[width+2] = STATUS.ALIVE.value;
+//        board[2*width] = STATUS.ALIVE.value;
+//        board[2*width+1] = STATUS.ALIVE.value;
+//        board[2*width+2] = STATUS.ALIVE.value;
 
     }
 
@@ -78,9 +126,6 @@ public class GameofLife {
             for (int x = 0; x < boardWidth; x++) {
                 int coordinate = y*boardWidth+x;
                 int numNeighbours = countNeighbours(x, y);
-                if (numNeighbours>0) {
-                    Log.i("GoL", "X: " + x + ", Y: " + y + " | numNeighbours: " + numNeighbours);
-                }
                 switch(numNeighbours){
                     case 0:
                     case 1:

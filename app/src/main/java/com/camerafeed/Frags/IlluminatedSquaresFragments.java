@@ -7,21 +7,34 @@ import android.graphics.PointF;
 import android.net.Uri;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.provider.Settings;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.SeekBar;
 
 import com.camerafeed.MyOpenGL.GameofLife;
 import com.camerafeed.MyOpenGL.GoLRenderer;
+import com.camerafeed.R;
+import com.camerafeed.Views.JoystickMovedListener;
+import com.camerafeed.Views.JoystickView;
+
+import java.util.Calendar;
 
 
-public class IlluminatedSquaresFragments extends Fragment {
+public class IlluminatedSquaresFragments extends Fragment implements JoystickMovedListener, SeekBar.OnSeekBarChangeListener, View.OnClickListener {
     private OnFragmentInteractionListener mListener;
     private GameofLife GoL;
     private PointF screenSize;
     private GoLRenderer renderer;
+    private JoystickView joystick;
+    private SeekBar speedBar;
+    private long delay = 10;
 
     public IlluminatedSquaresFragments() {
         // Required empty public constructor
@@ -37,10 +50,29 @@ public class IlluminatedSquaresFragments extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         /*View rootView = inflater.inflate(R.layout.fragment_sketch_board,container,false);
         return rootView;*/
-        final int GoLX = 30, GoLY = 30;
+
+        View view = inflater.inflate(R.layout.fragment_illuminated_squares_fragments, container, false);//new GLSurfaceView(getActivity());
+
+        return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        final int GoLX = 100, GoLY = 100;
         GoL = new GameofLife(GoLX, GoLY);
 
-        GLSurfaceView glSurfaceView = new GLSurfaceView(getActivity());
         screenSize = new PointF();
         Point p = new Point();
         getActivity().getWindowManager().getDefaultDisplay().getSize(p);
@@ -48,10 +80,17 @@ public class IlluminatedSquaresFragments extends Fragment {
         screenSize.y = p.y;
         renderer = new GoLRenderer(screenSize);
         renderer.init(GoL, GoLX, GoLY);
-        glSurfaceView.setEGLContextClientVersion(2);
+        GLSurfaceView glSurfaceView = (GLSurfaceView)getActivity().findViewById(R.id.OpenGLView);
+        if(joystick == null) {
+            glSurfaceView.setEGLContextClientVersion(2);
+        }
         glSurfaceView.setRenderer(renderer);
-
-
+        joystick = (JoystickView)getActivity().findViewById(R.id.JoyStick);
+        joystick.setOnJostickMovedListener(this);
+        speedBar = (SeekBar)getActivity().findViewById(R.id.seekBar);
+        speedBar.setOnSeekBarChangeListener(this);
+        Button b = (Button)getActivity().findViewById(R.id.button);
+        b.setOnClickListener(this);
 
         glSurfaceView.setOnTouchListener(new View.OnTouchListener() {
 
@@ -121,13 +160,18 @@ public class IlluminatedSquaresFragments extends Fragment {
 
 
         Thread thread = new Thread() {
+//            Calendar time = Calendar.getInstance();
+//            long startTime = time.getTimeInMillis();
+
             @Override
             public void run() {
                 try {
                     while(true) {
-                        sleep(500);
-                        GoL.tick();
-                        renderer.update();
+                        sleep(delay);
+                        if(delay != speedBar.getMax()) {
+                            GoL.tick();
+                            renderer.update();
+                        }
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -137,29 +181,47 @@ public class IlluminatedSquaresFragments extends Fragment {
 
         thread.start();
 
-        return glSurfaceView;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
 
-    @Override
-    public void onStart(){
-        super.onStart();
-    }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    //Joystick
+    @Override
+    public void OnMoved(int pan, int tilt) {
+        renderer.getCamera().move(pan, tilt);
+    }
+
+    @Override
+    public void OnReleased() {
+
+    }
+
+    //Speedbar
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        delay = progress;
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        GoL.tick();
+        renderer.update();
     }
 
     public interface OnFragmentInteractionListener {
