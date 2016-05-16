@@ -89,7 +89,7 @@ public class IlluminatedSquaresFragments extends Fragment implements JoystickMov
         joystick.setOnJostickMovedListener(this);
         speedBar = (SeekBar)getActivity().findViewById(R.id.seekBar);
         speedBar.setOnSeekBarChangeListener(this);
-        Button b = (Button)getActivity().findViewById(R.id.button);
+        Button b = (Button)getActivity().findViewById(R.id.stepButton);
         b.setOnClickListener(this);
 
         glSurfaceView.setOnTouchListener(new View.OnTouchListener() {
@@ -148,7 +148,7 @@ public class IlluminatedSquaresFragments extends Fragment implements JoystickMov
             }
 
             private float getSpacing(MotionEvent event, int pointIndex1, int pointIndex2) {
-                if (event.getPointerCount() < 2) {
+                if (event.getPointerCount() != 2) {
                     return 1f;
                 }
                 float x = event.getX(pointIndex1) - event.getX(pointIndex2);

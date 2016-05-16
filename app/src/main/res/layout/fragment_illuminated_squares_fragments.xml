@@ -16,7 +16,8 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_margin="15dp" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -29,14 +30,14 @@
             android:id="@+id/seekBar"
             android:layout_gravity="center_horizontal|bottom"
             android:layout_alignParentEnd="true"
-            android:max="100"
-            android:progress="20" />
+            android:max="1000"
+            android:progress="100" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Step"
-            android:id="@+id/StepButton"
+            android:id="@+id/stepButton"
             android:layout_alignParentTop="true"
             android:textColor="#ff0000"
             android:background="#00009db9" />

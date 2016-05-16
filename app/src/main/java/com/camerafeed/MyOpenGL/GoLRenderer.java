@@ -103,12 +103,15 @@ public class GoLRenderer implements GLSurfaceView.Renderer {
                 if(GoL.board[y*GoL.boardWidth+x] == GameofLife.STATUS.DEAD.getDead()){
                     continue;
                 }
-                float[] a = {x-15+0.5f, -(y-15+0.5f)};
+                float[] a = {x-(GoL.boardWidth/2), -(y-(GoL.boardHeight/2))};
                 mShader.setOffset(a);
                 mVBOBox.draw();
             }
         }
-        //mVBOGrid.draw();
+        b[0] = -0.5f;
+        b[1] = -0.5f;
+        mShader.setOffset(b);
+        mVBOGrid.draw();
 
     }
     static float[] green = {0.2f,1,0.2f};
