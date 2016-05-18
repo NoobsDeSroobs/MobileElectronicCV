@@ -86,11 +86,13 @@ public class GameofLife {
             board[y*width+x] = STATUS.ALIVE.value;
         }
 
-//        board[1] = STATUS.ALIVE.value;
-//        board[width+2] = STATUS.ALIVE.value;
-//        board[2*width] = STATUS.ALIVE.value;
-//        board[2*width+1] = STATUS.ALIVE.value;
-//        board[2*width+2] = STATUS.ALIVE.value;
+        for (int i = 0; i < GosperGliderGun.length; i+=2) {
+            int x = GosperGliderGun[i]+5;
+            int y = boardHeight-GosperGliderGun[i+1];
+
+            board[y*width+x] = STATUS.ALIVE.value;
+        }
+
 
     }
 

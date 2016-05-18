@@ -138,7 +138,7 @@ public class JoystickView extends View {
 			touchY = Math.max(Math.min(touchY, radius), -radius);
 
 			// Coordinates
-			Log.d(TAG, "X:" + touchX + "|Y:" + touchY);
+			//Log.d(TAG, "X:" + touchX + "|Y:" + touchY);
 
 			// Pressure
 			if (listener != null) {

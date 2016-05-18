@@ -143,7 +143,7 @@ public class GoLRenderer implements GLSurfaceView.Renderer {
         data = GeoData.Box3D();
         float[] color = {255, 0, 0};
         data.setColor(color);
-        mVBOFocalPoint = new VBO(data.mVertices, data.mIndices, GLES20.GL_LINES, false, false, -1);
+        mVBOFocalPoint = new VBO(data.mVertices, data.mIndices, GLES20.GL_LINE_STRIP, false, false, -1);
     }
 
     // This is called when the surface changes, e.g. after screen rotation.

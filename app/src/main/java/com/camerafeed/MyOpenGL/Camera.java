@@ -16,6 +16,8 @@ public class Camera {
     private float[] mCameraLocationPrev = {0, 0, 60, 1};
     private float[] mFocusLocation = {0, 0, 0, 1};
     private float[] mUpVector = {0, 1, 0, 1};
+    private float movX = 0;
+    private float movY = 0;
 
 
     public Camera(PointF screenSize){
@@ -91,26 +93,39 @@ public class Camera {
     }
 
     public void zoom(float scale) {
-        mCameraLocation[0] = mCameraLocationPrev[0] * scale;
-        mCameraLocation[1] = mCameraLocationPrev[1] * scale;
-        mCameraLocation[2] = mCameraLocationPrev[2] * scale;
+        float[] focalToCam = new float[3];
+        focalToCam[0] = mCameraLocationPrev[0] - mFocusLocation[0];
+        focalToCam[1] = mCameraLocationPrev[1] - mFocusLocation[1];
+        focalToCam[2] = mCameraLocationPrev[2] - mFocusLocation[2];
+
+
+        mCameraLocation[0] = mFocusLocation[0] + (focalToCam[0] * scale);
+        mCameraLocation[1] = mFocusLocation[1] + (focalToCam[1] * scale);
+        mCameraLocation[2] = mFocusLocation[2] + (focalToCam[2] * scale);
     }
 
     public void rotate(PointF dir) {
-//        if (dir.x < 0.2 && dir.x > -0.2 && dir.y < 0.2 && dir.y > 0.2){
-//            return;
-//        }
+        float[] focalToCam = {0, 0, 0, 1};
+        focalToCam[0] = mCameraLocationPrev[0] - mFocusLocation[0];
+        focalToCam[1] = mCameraLocationPrev[1] - mFocusLocation[1];
+        focalToCam[2] = mCameraLocationPrev[2] - mFocusLocation[2];
+
+
         float[] tempM = new float[16];
         Matrix.setIdentityM(tempM, 0);
         float[] axis = new float[4];
         axis[3] = 1;
-        cross(mCameraLocation, mUpVector, axis);
+        cross(focalToCam, mUpVector, axis);
         normalize(axis);
         Matrix.rotateM(tempM, 0, dir.y, axis[0], axis[1], axis[2]);
-        Matrix.multiplyMV(mCameraLocation, 0, tempM, 0, mCameraLocation, 0);
+        Matrix.multiplyMV(focalToCam, 0, tempM, 0, focalToCam, 0);
         Matrix.setIdentityM(tempM, 0);
         Matrix.rotateM(tempM, 0, -dir.x, mUpVector[0], mUpVector[1], mUpVector[2]);
-        Matrix.multiplyMV(mCameraLocation, 0, tempM, 0, mCameraLocation, 0);
+        Matrix.multiplyMV(focalToCam, 0, tempM, 0, focalToCam, 0);
+
+        mCameraLocation[0] = mFocusLocation[0] + focalToCam[0];
+        mCameraLocation[1] = mFocusLocation[1] + focalToCam[1];
+        mCameraLocation[2] = mFocusLocation[2] + focalToCam[2];
 
 
         saveCamera();
@@ -130,12 +145,36 @@ public class Camera {
     }
 
     public void move(int pan, int tilt) {
-        mCameraLocation[0] += pan/10;
-        mCameraLocation[1] -= tilt/10;
-        mFocusLocation[0] += pan/10;
-        mFocusLocation[1] -= tilt/10;
-        saveCamera();
-        updateMatrices();
+        movX += pan/20f;
+        movY -= tilt/20f;
+        boolean dirtyCam = false;
+        if(movX>1f){
+            dirtyCam = true;
+            mCameraLocation[0] += 1;
+            mFocusLocation[0] += 1;
+            movX -= 1;
+        }else if(movX < -1f){
+            dirtyCam = true;
+            mCameraLocation[0] -= 1;
+            mFocusLocation[0] -= 1;
+            movX += 1;
+        }
+
+        if(movY>1f){
+            dirtyCam = true;
+            mCameraLocation[1] += 1;
+            mFocusLocation[1] += 1;
+            movY -= 1;
+        }else if(movY < -1f){
+            dirtyCam = true;
+            mCameraLocation[1] -= 1;
+            mFocusLocation[1] -= 1;
+            movY += 1;
+        }
+        if(dirtyCam == true) {
+            saveCamera();
+            updateMatrices();
+        }
     }
 
     public float[] getFocalPoint() {

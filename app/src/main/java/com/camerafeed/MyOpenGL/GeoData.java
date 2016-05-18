@@ -103,9 +103,9 @@ public class GeoData {
                 vertices[numComponents * (y * width + x) + 0] = x - (width / 2);
                 vertices[numComponents * (y * width + x) + 1] = y - (height / 2);
                 vertices[numComponents * (y * width + x) + 2] = 0.0f;
-                vertices[numComponents * (y * width + x) + 3] = 255.0f;
-                vertices[numComponents * (y * width + x) + 4] = 255.0f;
-                vertices[numComponents * (y * width + x) + 5] = 255.0f;
+                vertices[numComponents * (y * width + x) + 3] = 0.2f;
+                vertices[numComponents * (y * width + x) + 4] = 0.2f;
+                vertices[numComponents * (y * width + x) + 5] = 0.2f;
             }
         }
         return vertices;
